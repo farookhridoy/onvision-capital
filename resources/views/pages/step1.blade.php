@@ -61,8 +61,8 @@ if (Session::has('homepage')) {
                     
                     <div class="col-12 col-md-6">
                         <div class="form-group">
-                            <span class="">DBA<span class="text-danger">*</span></span>
-                            <input type="date" class="form-control" placeholder="Business Start Date" required
+                            <span class="">DBA</span>
+                            <input type="text" class="form-control" placeholder="DBA"
                             name="business_date_of_birth" value="{{old('business_date_of_birth', isset($homepage) ? $homepage['business_date_of_birth'] :'')}}">
                             @error('business_date_of_birth')
                             <div class="alert alert-danger">{{ $message }}</div>
@@ -115,7 +115,7 @@ if (Session::has('homepage')) {
                     </div>
                     <div class="col-12 col-md-4">
                         <div class="form-group">
-                            <span class="">Telephone<span class="text-danger">*</span></span>
+                            <span class="">Telephone #<span class="text-danger">*</span></span>
                             <input type="number" min="11" class="form-control" placeholder="Telephone" name="business_phone"
                             required value="{{old('business_phone',isset($homepage) ? $homepage['business_phone'] :'')}}">
                             @error('business_phone')
@@ -125,7 +125,7 @@ if (Session::has('homepage')) {
                     </div>
                     <div class="col-12 col-md-4">
                         <div class="form-group">
-                            <span class="">Fax<span class="text-danger">*</span></span>
+                            <span class="">Fax #<span class="text-danger">*</span></span>
                             <input type="number" min="11" class="form-control" placeholder="Phone No" name="business_fax"
                             required value="{{old('business_fax',isset($homepage) ? $homepage['business_fax'] :'')}}">
                             @error('business_fax')
@@ -167,9 +167,9 @@ if (Session::has('homepage')) {
 
                      <div class="col-12 col-md-4">
                         <div class="form-group">
-                            <span class="">Website<span class="text-danger">*</span></span>
+                            <span class="">Website</span>
                             <input type="text" class="form-control" placeholder="Website" name="website"
-                            required value="{{old('website',isset($homepage) ? $homepage['website'] :'')}}">
+                             value="{{old('website',isset($homepage) ? $homepage['website'] :'')}}">
                             @error('website')
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror

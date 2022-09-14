@@ -47,7 +47,6 @@ class UserController extends Controller
 
         $this->validate($request, [
             'business_name' => 'required|max:25|min:3',
-            'business_date_of_birth' => 'required|string',
             'business_address' => 'required',
             'business_city' => 'required',
             'business_state' => 'required',
@@ -82,8 +81,6 @@ class UserController extends Controller
             "service_sold" => $request->service_sold,
         ]);
 
-        //dd(Session::get('homepage'));
-
         return redirect(route('second_step_view'));
     }
     public function NextTow(Request $request)
@@ -100,7 +97,7 @@ class UserController extends Controller
             'merchant_ssn' => 'required',
             'merchant_date_of_birth' => 'required',
             'merchant_home' => 'required',
-            'merchant_phone_no' => 'required|max:15',
+            'merchant_phone_no' => 'required|max:15|min:11',
         ]);
 
         Session::put('merchant', [
@@ -134,7 +131,7 @@ class UserController extends Controller
             'partner_ssn' => 'required',
             'partner_date_of_birth' => 'required',
             'partner_home' => 'required',
-            'partner_phone_no' => 'required|max:15',
+            'partner_phone_no' => 'required|max:15|min:11',
         ]);
 
         Session::put('partner', [

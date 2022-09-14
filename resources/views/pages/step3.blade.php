@@ -156,7 +156,7 @@ if (Session::has('partner')) {
                         <div class="form-group">
                             <span class="">Cell #<span class="text-danger">*</span></span>
                             <input type="number" class="form-control" placeholder="Cell Phone" name="partner_phone_no"
-                            required value="{{old('partner_phone_no',isset($partner) ? $partner['partner_phone_no'] :'')}}">
+                            required value="{{old('partner_phone_no',isset($partner) ? $partner['partner_phone_no'] :'')}}" >
                             @error('partner_phone_no')
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
