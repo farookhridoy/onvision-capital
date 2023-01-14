@@ -156,10 +156,10 @@ $partner = Session::get('partner');
                     </div>
                     <div class="col-12">
                         <div class="checkout_pagination d-flex  justify-content-end">
+                            <a href="{{ route('final_step_view') }}"
+                                class="btn btn-warning btn-sm mt-2 ml-2 text-right">Skip</a>
                             <a href="{{ route('second_step_view') }}" class="btn btn-sm btn-info mt-2 ml-2">Previous</a>
                             <button type="submit" class="btn btn-primary btn-sm mt-2 ml-2 text-right">Next</button>
-
-                            <button type="submit" class="btn btn-warning btn-sm mt-2 ml-2 text-right">Skip</button>
                         </div>
                     </div>
                 </div>

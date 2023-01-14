@@ -89,4 +89,9 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [];
+
+    public function userBankStatement()
+    {
+        return $this->hasMany(UserBankStatement::class, 'user_id', 'id');
+    }
 }

@@ -44,7 +44,6 @@ class UserController extends Controller
 
     public function NextOne(Request $request)
     {
-        //return $request->all();
         $this->validate($request, [
             'business_name' => 'required|max:25|min:3',
             'business_address' => 'required',
@@ -239,7 +238,8 @@ class UserController extends Controller
             Mail::send('mail.mail_body', $data, function ($message) use ($data, $pdf_filename) {
                 $message
                 ->to($data['email'])
-                ->cc(['mizan.bd2369@gmail.com','info@onvisioncapital.com','deals@onvisioncapital.com'])
+                //->cc(['mizan.bd2369@gmail.com','info@onvisioncapital.com','deals@onvisioncapital.com'])
+                ->cc(['gmfaruk2021@gmail.com'])
                 ->subject($data["title"])
                 ->attach(public_path('attachments/'.$pdf_filename.'.pdf'))
                 ->attach(public_path($data["user"]->bank_statements_file));

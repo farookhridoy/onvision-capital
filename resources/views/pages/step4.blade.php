@@ -252,7 +252,7 @@ $partner = Session::get('partner');
                     </div>
                 </div>
             </div>
-            @if($partner && $partner['partner_owner_name'] !='')
+            @if(isset($partner) && $partner['partner_owner_name'] !='')
             <div class="col-md-6 col-sm-12 col-xs-12 mt-3">
                 <div class="form-group">
                     <span class="">Date<span class="text-danger">*</span></span>
