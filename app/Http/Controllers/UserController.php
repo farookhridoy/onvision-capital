@@ -44,22 +44,17 @@ class UserController extends Controller
 
     public function NextOne(Request $request)
     {
-
+        //return $request->all();
         $this->validate($request, [
             'business_name' => 'required|max:25|min:3',
             'business_address' => 'required',
             'business_city' => 'required',
             'business_state' => 'required',
             'business_zip' => 'required',
-            'business_phone' => 'required|max:15|min:11',
-            'business_fax' => 'required',
+            'business_phone' => 'required|max:20|min:10',
             'federal_tax_id' => 'required',
             'businesss_start_date' => 'required',
-            'lenght_of_ownership' => 'required',
-            'website' => 'required',
             'business_email' => 'required|email',
-            'type_of_entity' => 'required|string',
-            'service_sold' => 'required',
         ]);
 
         Session::put('homepage', [
@@ -79,6 +74,7 @@ class UserController extends Controller
             "type_of_entity" => $request->type_of_entity,
             "type_of_business" => json_encode($request->type_of_business),
             "service_sold" => $request->service_sold,
+            "requested_advance_amount" => $request->requested_advance_amount,
         ]);
 
         return redirect(route('second_step_view'));
@@ -89,15 +85,13 @@ class UserController extends Controller
         $this->validate($request, [
             'merchant_owner_name' => 'required|max:34',
             'merchant_title' => 'required|string',
-            'merchant_ownership' => 'required',
             'merchant_home_address' => 'required',
             'merchant_city' => 'required',
             'merchant_state' => 'required',
             'merchant_zip' => 'required',
             'merchant_ssn' => 'required',
             'merchant_date_of_birth' => 'required',
-            'merchant_home' => 'required',
-            'merchant_phone_no' => 'required|max:15|min:11',
+            'merchant_phone_no' => 'max:20|min:10',
         ]);
 
         Session::put('merchant', [
@@ -121,17 +115,7 @@ class UserController extends Controller
     public function NextThree(Request $request)
     {   
         $this->validate($request, [
-            'partner_owner_name' => 'required|max:34',
-            'partner_title' => 'required|string',
-            'partner_ownership' => 'required',
-            'partner_home_address' => 'required',
-            'partner_city' => 'required',
-            'partner_state' => 'required',
-            'partner_zip' => 'required',
-            'partner_ssn' => 'required',
-            'partner_date_of_birth' => 'required',
-            'partner_home' => 'required',
-            'partner_phone_no' => 'required|max:15|min:11',
+            'partner_phone_no' => 'max:20',
         ]);
 
         Session::put('partner', [
@@ -155,19 +139,7 @@ class UserController extends Controller
     {   
         $this->validate($request, [
             'signature_one' => 'required',
-            'signature_two' => 'required',
             'signature_date_one' => 'required',
-            'signature_date_two' => 'required',
-            'business_mortgage_bank' => 'required',
-            'business_mortgage_account' => 'required',
-            'business_mortgage_phone' => 'required',
-            'software_model' => 'required',
-            'number_of_terminal' => 'required',
-            'monthly_credit_card_volumn' => 'required',
-            'avg_monthly_gross_sales_volumn' => 'required',
-            'requested_advance_amount' => 'required',
-            'current_cash_advance_company' => 'required',
-            'balance' => 'required',
         ]);
 
         DB::beginTransaction();
@@ -248,6 +220,12 @@ class UserController extends Controller
                 $user->save();
             }
 
+            if ($request->has('bank_statements_file')) {
+                $bank_statements_file = $this->fileUpload($request->bank_statements_file,'uploads/bank-statement/',$user->id);
+                $user->bank_statements_file=$bank_statements_file;
+                $user->save();
+            }
+
             //DB Commit
             DB::commit();
 
@@ -261,9 +239,10 @@ class UserController extends Controller
             Mail::send('mail.mail_body', $data, function ($message) use ($data, $pdf_filename) {
                 $message
                 ->to($data['email'])
-                ->cc(['mizan.bd2369@gmail.com','gmfaruk2021@gmail.com','info@onvisioncapital.com'])
+                ->cc(['mizan.bd2369@gmail.com','info@onvisioncapital.com','deals@onvisioncapital.com'])
                 ->subject($data["title"])
-                ->attach(public_path('attachments/'.$pdf_filename.'.pdf'));
+                ->attach(public_path('attachments/'.$pdf_filename.'.pdf'))
+                ->attach(public_path($data["user"]->bank_statements_file));
             });
 
             Session::forget('homepage');

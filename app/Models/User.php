@@ -71,6 +71,7 @@ class User extends Authenticatable
         'signature_date_one',
         'signature_two',
         'signature_date_two',
+        'bank_statements_file',
     ];
 
     /**

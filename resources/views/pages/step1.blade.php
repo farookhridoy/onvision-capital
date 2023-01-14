@@ -11,18 +11,7 @@ if (Session::has('homepage')) {
 @endphp
 <section>
     <div class="container">
-        <div class="text-center">
-            <div class="row">
-                <div class="col-12">
-                    <h3 class="font-weight-bold">4 steps to funding</h3>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <p class="text-center">Thank you for placing your trust in us. Please take a few minutes to complete the form below. We will process your request in 24-48 business hours.</p>
-                </div>
-            </div>
-        </div>
+        @include('partials.head')
         @include('partials.msg')
     </div>
 </section>
@@ -35,7 +24,7 @@ if (Session::has('homepage')) {
                 <a class="active" href="#">BUSINESS INFORMATION</a>
                 <a href="#">MERCHANT/OWNER INFORMATION</a>
                 <a href="#">PARTNER /OWNER INFORMATION</a>
-                <a href="#">BUSINESS PROPERTY INFORMATION</a>
+                <a href="#">FINAL STEP</a>
             </div>
         </div>
     </div>
@@ -72,10 +61,7 @@ if (Session::has('homepage')) {
                     <div class="col-12 col-md-6">
                         <div class="form-group">
                             <span class="">Address <span class="text-danger">*</span></span>
-                            <textarea type="textarea" class="form-control"  name="business_address" required>
-                                {{old('business_address',isset($homepage) ? $homepage['business_address'] :'')}}
-                            </textarea>
-
+                            <textarea class="form-control" name="business_address" required>{{old('business_address',isset($homepage) ? $homepage['business_address'] :'')}}</textarea>
                             @error('business_address')
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
@@ -116,14 +102,14 @@ if (Session::has('homepage')) {
                     <div class="col-12 col-md-4">
                         <div class="form-group">
                             <span class="">Telephone #<span class="text-danger">*</span></span>
-                            <input type="number" min="11" class="form-control" placeholder="Telephone" name="business_phone"
+                            <input type="tel" min="10" class="form-control" placeholder="Telephone" name="business_phone"
                             required value="{{old('business_phone',isset($homepage) ? $homepage['business_phone'] :'')}}">
                             @error('business_phone')
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
-                    <div class="col-12 col-md-4">
+                    {{-- <div class="col-12 col-md-4">
                         <div class="form-group">
                             <span class="">Fax #<span class="text-danger">*</span></span>
                             <input type="number" min="11" class="form-control" placeholder="Phone No" name="business_fax"
@@ -132,7 +118,7 @@ if (Session::has('homepage')) {
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-12 col-md-4">
                         <div class="form-group">
                             <span class="">Federal Tax ID<span class="text-danger">*</span></span>
@@ -155,17 +141,17 @@ if (Session::has('homepage')) {
                         </div>
                     </div>
 
-                     <div class="col-12 col-md-4">
+                     {{-- <div class="col-12 col-md-4">
                         <div class="form-group">
-                            <span class="">Length of Ownership: %<span class="text-danger">*</span></span>
-                            <input type="number" class="form-control" placeholder="Length of Ownership: %" name="lenght_of_ownership" required value="{{old('lenght_of_ownership',isset($homepage) ? $homepage['lenght_of_ownership'] :'')}}">
+                            <span class="">Ownership: %<span class="text-danger">*</span></span>
+                            <input type="number" class="form-control" placeholder="Ownership: %" name="lenght_of_ownership" required value="{{old('lenght_of_ownership',isset($homepage) ? $homepage['lenght_of_ownership'] :'')}}">
                             @error('merchant_ownership')
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
+                    </div> --}}
 
-                     <div class="col-12 col-md-4">
+                     {{-- <div class="col-12 col-md-4">
                         <div class="form-group">
                             <span class="">Website</span>
                             <input type="text" class="form-control" placeholder="Website" name="website"
@@ -174,8 +160,38 @@ if (Session::has('homepage')) {
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
+                    </div> --}}
+                    <div class="col-12 col-md-4">
+                        <div class="form-group">
+                            <span class="">Email <span class="text-danger">*</span></span>
 
+                            <input type="email" class="form-control" placeholder="Email " name="business_email" required value="{{old('business_email', isset($homepage) ? $homepage['business_email']:'')}}">
+
+                            @error('business_email')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="form-group">
+                            <span class="">Product/Service Sold<span class="text-danger">*</span></span>
+                            <input value="{{old('service_sold', isset($homepage) ? $homepage['service_sold']:'')}}" type="text" class="form-control" placeholder="Service sold" required name="service_sold">
+                            @error('service_sold')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="form-group">
+                            <span class="">Requested Advance Amount <span class="text-danger">*</span></span>
+
+                            <input type="text" class="form-control" placeholder="Requested Advance Amount" name="requested_advance_amount" required value="{{old('requested_advance_amount', isset($homepage) ? $homepage['requested_advance_amount']:'')}}">
+
+                            @error('requested_advance_amount')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
                     <div class="col-12 col-md-8">
                         <div class="form-group">
                             <span class="">Type of Entity (circle one) <span class="text-danger">*</span></span>
@@ -197,19 +213,9 @@ if (Session::has('homepage')) {
                         </div>
                     </div>
 
-                    <div class="col-12 col-md-4">
-                        <div class="form-group">
-                            <span class="">Email <span class="text-danger">*</span></span>
 
-                            <input type="email" class="form-control" placeholder="Email " name="business_email" required value="{{old('business_email', isset($homepage) ? $homepage['business_email']:'')}}">
 
-                            @error('business_email')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-8">
+                    {{-- <div class="col-12 col-md-8">
                         <div class="form-group">
                             <span class="">Type of Business (circle all that apply) <span class="text-danger">*</span></span>
                             <br>
@@ -231,21 +237,12 @@ if (Session::has('homepage')) {
                             <input type="checkbox" id="Other" name="type_of_business[]" value="Other" {{ isset($homepage)? (in_array("Other",json_decode($homepage['type_of_business'])))? 'checked' : '':'' }}>
                             <label for="Other"> Other</label>&nbsp;&nbsp;&nbsp;&nbsp;
                         </div>
-                    </div>
+                    </div> --}}
                     
-                    <div class="col-12 col-md-4">
-                        <div class="form-group">
-                            <span class="">Product/Service Sold<span class="text-danger">*</span></span>
-                            <input value="{{old('service_sold', isset($homepage) ? $homepage['service_sold']:'')}}" type="text" class="form-control" placeholder="Service sold" required name="service_sold">
-                            @error('service_sold')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-
+                    
                     <div class="col-12">
                         <div class="checkout_pagination d-flex  justify-content-end">
-                            <button type="submit" class="btn btn-primary mt-2 ml-2 text-right">Next</button>
+                            <button type="submit" class="btn btn-sm btn-primary mt-2 ml-2 text-right">Next</button>
                         </div>
                     </div>
 

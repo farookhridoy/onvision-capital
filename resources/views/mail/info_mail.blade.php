@@ -149,14 +149,14 @@
                         {{ $user->business_phone }}
                     </td>
                 </tr>
-                <tr>
+                {{-- <tr>
                     <td style="width: 50% !important;font-size: 14px !important;">
                         Fax #:&nbsp; 
                     </td>
                     <td style="width: 50% !important;font-size: 14px !important;" class="text-right">
                         {{ $user->business_fax }}
                     </td>
-                </tr>
+                </tr> --}}
                 <tr>
                     <td style="width: 50% !important;font-size: 14px !important;">
                         Federal Tax ID:&nbsp; 
@@ -170,25 +170,25 @@
                         Date Business Started:&nbsp; 
                     </td>
                     <td style="width: 50% !important;font-size: 14px !important;" class="text-right">
-                        {{ date('jS F Y', strtotime($user->businesss_start_date)) }}
+                        {{ $user->businesss_start_date !=""? date('jS F Y', strtotime($user->businesss_start_date)) :''}}
                     </td>
                 </tr>
-                <tr>
+                {{-- <tr>
                     <td style="width: 50% !important;font-size: 14px !important;">
                         Length of Ownership: % :&nbsp; 
                     </td>
                     <td style="width: 50% !important;font-size: 14px !important;" class="text-right">
                         {{ $user->lenght_of_ownership }}
                     </td>
-                </tr>
-                <tr>
+                </tr> --}}
+                {{-- <tr>
                     <td style="width: 50% !important;font-size: 14px !important;">
                         Website: % :&nbsp; 
                     </td>
                     <td style="width: 50% !important;font-size: 14px !important;" class="text-right">
                         {{ $user->website }}
                     </td>
-                </tr>
+                </tr> --}}
                 <tr>
                     <td style="width: 50% !important;font-size: 14px !important;">
                         Type of Entity (circle one): % :&nbsp; 
@@ -218,7 +218,7 @@
                         {{$user->business_email}}
                     </td>
                 </tr>
-                <tr>
+                {{-- <tr>
                     <td style="width: 50% !important;font-size: 14px !important;">
                         Type of Business (circle all that apply) :&nbsp; 
                     </td>
@@ -241,13 +241,21 @@
                         <input type="checkbox" id="Other" name="type_of_business[]" value="Other" {{ isset($user)? (in_array("Other",json_decode($user['type_of_business'])))? 'checked' : '':'' }}>
                         <label for="Other"> Other</label>&nbsp;&nbsp;&nbsp;&nbsp;
                     </td>
-                </tr>
+                </tr> --}}
                 <tr>
                     <td style="width: 50% !important;font-size: 14px !important;">
                         Product/Service Sold :&nbsp; 
                     </td>
                     <td style="width: 50% !important;font-size: 14px !important;" class="text-right">
                         {{ $user->service_sold }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50% !important;font-size: 14px !important;">
+                        Requested Advance Amount:&nbsp; 
+                    </td>
+                    <td style="width: 50% !important;font-size: 14px !important;" class="text-right">
+                        {{ $user->requested_advance_amount }}
                     </td>
                 </tr>
             </tbody>
@@ -287,9 +295,9 @@
                 </tr>
                 <tr>
                     <td style="width: 50% !important;font-size: 14px !important;">
-                     Home Address :&nbsp; 
-                 </td>
-                 <td style="width: 50% !important;font-size: 14px !important;" class="text-right">
+                       Home Address :&nbsp; 
+                   </td>
+                   <td style="width: 50% !important;font-size: 14px !important;" class="text-right">
                     &nbsp;{{ $user->merchant_home_address }}
                     <br>
                     <br>
@@ -311,19 +319,19 @@
                     Date of Birth  :&nbsp; 
                 </td>
                 <td style="width: 50% !important;font-size: 14px !important;" class="text-right">
-                    {{ date('jS F Y', strtotime($user->merchant_date_of_birth)) }}
+                    {{ $user->merchant_date_of_birth !=""? date('jS F Y', strtotime($user->merchant_date_of_birth)):'' }}
 
                 </td>
             </tr>
 
-            <tr>
+            {{-- <tr>
                 <td style="width: 50% !important;font-size: 14px !important;">
                     Home #  :&nbsp; 
                 </td>
                 <td style="width: 50% !important;font-size: 14px !important;" class="text-right">
                     {{ $user->merchant_home }}
                 </td>
-            </tr>
+            </tr> --}}
             <tr>
                 <td style="width: 50% !important;font-size: 14px !important;">
                     Cell # :&nbsp; 
@@ -369,9 +377,9 @@
             </tr>
             <tr>
                 <td style="width: 50% !important;font-size: 14px !important;">
-                 Home Address :&nbsp; 
-             </td>
-             <td style="width: 50% !important;font-size: 14px !important;" class="text-right">
+                   Home Address :&nbsp; 
+               </td>
+               <td style="width: 50% !important;font-size: 14px !important;" class="text-right">
                 &nbsp;{{ $user->partner_home_address }}
                 <br>
                 <br>
@@ -393,19 +401,19 @@
                 Date of Birth  :&nbsp; 
             </td>
             <td style="width: 50% !important;font-size: 14px !important;" class="text-right">
-                {{ date('jS F Y', strtotime($user->partner_date_of_birth)) }}
+                {{ $user->partner_date_of_birth!=''? date('jS F Y', strtotime($user->partner_date_of_birth)):'' }}
 
             </td>
         </tr>
 
-        <tr>
+        {{-- <tr>
             <td style="width: 50% !important;font-size: 14px !important;">
                 Home #  :&nbsp; 
             </td>
             <td style="width: 50% !important;font-size: 14px !important;" class="text-right">
                 {{ $user->partner_home }}
             </td>
-        </tr>
+        </tr> --}}
         <tr>
             <td style="width: 50% !important;font-size: 14px !important;">
                 Cell # :&nbsp; 
@@ -417,7 +425,7 @@
     </tbody>
 </table>
 
-<table class="table table-bordered">
+{{-- <table class="table table-bordered">
     <thead>
         <tr>
             <th colspan="2"><center>BUSINESS PROPERTY INFORMATION</center></th>
@@ -442,16 +450,16 @@
             </td>
         </tr>
     </tbody>
-</table>
+</table> --}}
 
 <table class="table table-bordered">
-<thead>
-    <tr>
-        <th colspan="2"><center>OTHER INFORMATION</center></th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
+    <thead>
+        <tr>
+            <th colspan="2"><center>OTHER INFORMATION</center></th>
+        </tr>
+    </thead>
+    <tbody>
+   {{--  <tr>
         <td style="width: 50% !important;font-size: 14px !important;">
             Avg. Monthly Credit Card Volume:&nbsp; 
         </td>
@@ -468,14 +476,7 @@
 
         </td>
     </tr>
-    <tr>
-        <td style="width: 50% !important;font-size: 14px !important;">
-            Requested Advance Amount:&nbsp; 
-        </td>
-        <td style="width: 50% !important;font-size: 14px !important;" class="text-right">
-            {{ $user->requested_advance_amount }}
-        </td>
-    </tr>
+    
     <tr>
         <td style="width: 50% !important;font-size: 14px !important;">
             Do you Accept (Please circle all that apply)  :&nbsp; 
@@ -498,11 +499,11 @@
             <label for="EBT"> EBT</label>&nbsp;&nbsp;&nbsp;&nbsp;
 
         </td>
-    </tr>
+    </tr> --}}
 
     <tr>
         <td style="width: 50% !important;font-size: 14px !important;">
-            Prior/Current Cash Advance Company (if applicable)  :&nbsp; 
+            Prior/Current Advances Taken (if applicable)  :&nbsp; 
         </td>
         <td style="width: 50% !important;font-size: 14px !important;" class="text-right">
             {{ $user->current_cash_advance_company }}
@@ -517,14 +518,14 @@
         </td>
     </tr>
 
-    <tr>
+    {{-- <tr>
         <td style="width: 50% !important;font-size: 14px !important;">
             Underwriter Use Only :&nbsp; 
         </td>
         <td style="width: 50% !important;font-size: 14px !important;" class="text-right">
             {{ $user->underwrite }}
         </td>
-    </tr>
+    </tr> --}}
     <tr>
         <td colspan="2"> 
             <p class="text-left font-weight-bold">Applicant authorizes each of the above listed business and business owner/officer (individually and
@@ -558,9 +559,10 @@
             Applicant’s Signature
         </td>
         <td style="width: 50% !important;font-size: 14px !important;" class="text-right">
-            {{ date('jS F Y', strtotime($user->signature_date_one)) }}
+            {{ $user->signature_date_one !=''? date('jS F Y', strtotime($user->signature_date_one)) :'' }}
         </td>
     </tr>
+    @if($user->partner_owner_name !='')
     <tr>
         <td style="width: 50% !important;font-size: 14px !important;">
             @if(!empty($user->signature_two) && file_exists(public_path($user->signature_two)))
@@ -570,9 +572,10 @@
             2nd Applicant’s Signature
         </td>
         <td style="width: 50% !important;font-size: 14px !important;" class="text-right">
-            {{ date('jS F Y', strtotime($user->signature_date_two)) }}
+            {{ $user->signature_date_two !=''? date('jS F Y', strtotime($user->signature_date_two)):'' }}
         </td>
     </tr>
+    @endif
 </tbody>
 </table>
 </div>

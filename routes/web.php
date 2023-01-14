@@ -28,14 +28,14 @@ Route::get('reboot', function() {
 //End
 
 Route::get('/', [UserController::class, 'HomePage'])->name('home_page');
-Route::get('/step2', [UserController::class, 'secondstepview'])->name('second_step_view');
-Route::get('/step3', [UserController::class, 'thirdStep'])->name('third_step_view');
-Route::get('/step4', [UserController::class, 'finalStepView'])->name('final_step_view');
+Route::get('step2', [UserController::class, 'secondstepview'])->name('second_step_view');
+Route::get('step3', [UserController::class, 'thirdStep'])->name('third_step_view');
+Route::get('step4', [UserController::class, 'finalStepView'])->name('final_step_view');
 
 Route::get('/user/{id}', [UserController::class, 'show']);
 
-Route::post('/step1', [UserController::class, 'NextOne'])->name('submit_first_step');
-Route::post('/step2', [UserController::class, 'NextTow'])->name('submit_second_step');
-Route::post('/step3', [UserController::class, 'NextThree'])->name('submit_third_step');
-Route::post('/step4/save', [UserController::class, 'FinalStep'])->name('signpad.save');
+Route::post('step1/submit', [UserController::class, 'NextOne'])->name('submit_first_step');
+Route::post('step2/submit', [UserController::class, 'NextTow'])->name('submit_second_step');
+Route::post('step3/submit', [UserController::class, 'NextThree'])->name('submit_third_step');
+Route::post('step4/save', [UserController::class, 'FinalStep'])->name('signpad.save');
 

@@ -4,24 +4,12 @@
 use Illuminate\Support\Facades\Session;
 
 if (Session::has('merchant')) {
-    $merchant = Session::get('merchant');
+   $merchant = Session::get('merchant');
 }
 @endphp
 <section>
     <div class="container">
-        <div class="text-center">
-            <div class="row">
-                <div class="col-12">
-                    <h3 class="font-weight-bold">4 steps to funding</h3>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <p class="text-center">Thank you for placing your trust in us. Please take a few minutes to
-                    complete the form below. We will process your request in 24-48 business hours.</p>
-                </div>
-            </div>
-        </div>
+        @include('partials.head')
         @include('partials.msg')
     </div>
 </section>
@@ -34,7 +22,7 @@ if (Session::has('merchant')) {
                 <a href="#">BUSINESS INFORMATION</a>
                 <a class="active" href="#">MERCHANT/OWNER INFORMATION</a>
                 <a href="#">PARTNER /OWNER INFORMATION</a>
-                <a href="#">BUSINESS PROPERTY INFORMATION</a>
+                <a href="#">FINAL STEP</a>
             </div>
         </div>
     </div>
@@ -82,9 +70,7 @@ if (Session::has('merchant')) {
                     <div class="col-12 col-md-6">
                         <div class="form-group">
                             <span class="">Home Address <span class="text-danger">*</span></span>
-                            <textarea type="textarea" class="form-control" placeholder="Home Address" name="merchant_home_address" required>
-                                {{old('merchant_home_address',isset($merchant) ? $merchant['merchant_home_address'] :'')}}
-                            </textarea>
+                            <textarea type="textarea" class="form-control" placeholder="Home Address" name="merchant_home_address" required>{{old('merchant_home_address',isset($merchant) ? $merchant['merchant_home_address'] :'')}}</textarea>
                             @error('merchant_home_address')
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
@@ -138,13 +124,13 @@ if (Session::has('merchant')) {
                         <div class="form-group">
                             <span class="">Date of Birth<span class="text-danger">*</span></span>
                             <input type="date" class="form-control" placeholder="Date of Birth" required
-                            name="merchant_date_of_birth" value="{{old('merchant_date_of_birth', isset($merchant) ? $merchant['merchant_date_of_birth'] :'')}}">
+                            name="merchant_date_of_birth" value="{{isset($merchant) ? $merchant['merchant_date_of_birth'] !=''? $merchant['merchant_date_of_birth'] : date("Y-m-d"): date("Y-m-d")}}">
                             @error('merchant_date_of_birth')
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
-                    <div class="col-12 col-md-3">
+                    {{-- <div class="col-12 col-md-3">
                         <div class="form-group">
                             <span class="">Home # <span class="text-danger">*</span></span>
 
@@ -153,12 +139,12 @@ if (Session::has('merchant')) {
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
+                    </div> --}}
 
                     <div class="col-12 col-md-3">
                         <div class="form-group">
                             <span class="">Cell #<span class="text-danger">*</span></span>
-                            <input type="number" class="form-control" placeholder="Cell Phone" name="merchant_phone_no"
+                            <input type="tel" class="form-control" placeholder="Cell Phone" name="merchant_phone_no"
                             required value="{{old('merchant_phone_no',isset($merchant) ? $merchant['merchant_phone_no'] :'')}}">
                             @error('merchant_phone_no')
                             <div class="alert alert-danger">{{ $message }}</div>
@@ -168,8 +154,8 @@ if (Session::has('merchant')) {
 
                     <div class="col-12">
                         <div class="checkout_pagination d-flex  justify-content-end">
-                            <a href="{{ route('home_page') }}" class="btn btn-primary mt-2 ml-2">Previous</a>
-                            <button type="submit" class="btn btn-primary mt-2 ml-2 text-right">Next</button>
+                        <a href="{{ route('home_page') }}" class="btn btn-info btn-sm mt-2 ml-2">Previous</a>
+                            <button type="submit" class="btn btn-primary btn-sm mt-2 ml-2 text-right">Next</button>
                         </div>
                     </div>
                 </div>

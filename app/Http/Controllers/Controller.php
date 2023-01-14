@@ -6,7 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
-use \Meneses\LaravelMpdf\Facades\LaravelMpdf;
+use PDF;
 
 class Controller extends BaseController
 {
@@ -37,7 +37,7 @@ class Controller extends BaseController
     }
 
     public function viewMPDF($view, $data, $title, $filename){
-        LaravelMpdf::loadView($view, $data, [], [
+        PDF::loadView($view, $data, [], [
           'title'      => $title,
           'margin_top' => 0,
           'showImageErrors' => true
@@ -45,7 +45,7 @@ class Controller extends BaseController
     }
 
     public function outputMPDF($view, $data, $title, $filename){
-        return LaravelMpdf::loadView($view, $data, [], [
+        return PDF::loadView($view, $data, [], [
           'title'      => $title,
           'margin_top' => 0,
           'showImageErrors' => true
@@ -53,7 +53,7 @@ class Controller extends BaseController
     }
 
     public function saveMPDF($view, $data, $title, $filename){
-        return LaravelMpdf::loadView($view, $data, [], [
+        return PDF::loadView($view, $data, [], [
           'title'      => $title,
           'margin_top' => 0,
           'showImageErrors' => true
@@ -61,7 +61,7 @@ class Controller extends BaseController
     }
 
     public function downloadMPDF($view, $data, $title, $filename){
-        LaravelMpdf::loadView($view, $data, [], [
+        PDF::loadView($view, $data, [], [
           'title'      => $title,
           'margin_top' => 0,
           'showImageErrors' => true
