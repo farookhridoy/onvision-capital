@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use App\Models\UserBankStatement;
 use File;
 use DB;
 
@@ -131,6 +132,8 @@ class UserController extends Controller
             "partner_home" => $request->partner_home,
         ]);
 
+        //dd(Session::get('partner'));
+
         return redirect(route('final_step_view'));
     }
 
@@ -203,7 +206,8 @@ class UserController extends Controller
 
             $user->signature_date_one=$request->signature_date_one;
             $user->signature_date_two=$request->signature_date_two;
-
+            $user->signature_name_one=$request->signature_name_one;
+            $user->signature_name_two=$request->signature_name_two;
 
             $user->save();
             
@@ -219,10 +223,22 @@ class UserController extends Controller
                 $user->save();
             }
 
-            if ($request->has('bank_statements_file')) {
-                $bank_statements_file = $this->fileUpload($request->bank_statements_file,'uploads/bank-statement/',$user->id);
-                $user->bank_statements_file=$bank_statements_file;
-                $user->save();
+            // if ($request->has('bank_statements_file')) {
+            //     $bank_statements_file = $this->fileUpload($request->bank_statements_file,'uploads/bank-statement/',$user->id);
+            //     $user->bank_statements_file=$bank_statements_file;
+            //     $user->save();
+            // }
+
+            if($request->hasFile('bank_statements_file'))
+            {
+                foreach ($request->bank_statements_file as $key=> $photo) {
+                    $filename = $this->fileUpload($photo,'uploads/bank-statement/',$user->id.'-'.date('dmyhis'));
+                    UserBankStatement::create([
+                        'user_id' => $user->id,
+                        'file_name' => $filename,
+                        'status' => 1,
+                    ]);
+                }
             }
 
             //DB Commit
@@ -233,16 +249,17 @@ class UserController extends Controller
             $data["user"] = $user;
 
             $pdf_filename = 'information'.date('ymdHis');
-            $pdf = $this->saveMPDF('mail.info_mail', $data,  'Mail from onvisioncapital.com', $pdf_filename);
+            $pdf = $this->saveMPDF('mail.info_mail_raw', $data,  'Mail from onvisioncapital.com', $pdf_filename);
 
             Mail::send('mail.mail_body', $data, function ($message) use ($data, $pdf_filename) {
-                $message
-                ->to($data['email'])
+                $message->to($data['email'])
                 //->cc(['mizan.bd2369@gmail.com','info@onvisioncapital.com','deals@onvisioncapital.com'])
                 ->cc(['gmfaruk2021@gmail.com'])
                 ->subject($data["title"])
-                ->attach(public_path('attachments/'.$pdf_filename.'.pdf'))
-                ->attach(public_path($data["user"]->bank_statements_file));
+                ->attach(public_path('attachments/'.$pdf_filename.'.pdf'));
+                foreach($data['user']->userBankStatement as $file){
+                    $message->attach(public_path($file->file_name));
+                }
             });
 
             Session::forget('homepage');
@@ -257,4 +274,6 @@ class UserController extends Controller
         }
     }
 
+   
 }
+

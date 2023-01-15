@@ -1,8 +1,13 @@
 @extends('partials.master')
 @section('content')
-@if (Session::has('partner'))
-$partner = Session::get('partner');
-@endif
+
+@php
+use Illuminate\Support\Facades\Session;
+
+if (Session::has('partner')) {
+   $partner = Session::get('partner');
+}
+@endphp
 <section>
     <div class="container">
         @include('partials.head')

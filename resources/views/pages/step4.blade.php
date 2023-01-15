@@ -181,7 +181,7 @@ $partner = Session::get('partner');
                 <div class="form-group">
                     <span class="">Please provide your last 3 months business bank statements </span>
 
-                    <input type="file" class="form-control" name="bank_statements_file"
+                    <input type="file" class="form-control" name="bank_statements_file[]" multiple
                         value="{{old('bank_statements_file')}}" accept=".*pdf,.*png,.*jpeg">
 
                     @error('bank_statements_file')
@@ -231,13 +231,29 @@ $partner = Session::get('partner');
                 </p>
             </div>
             <div class="col-md-6 col-sm-12 col-xs-12 mt-3">
-                <div class="form-group">
-                    <span class="">Date<span class="text-danger">*</span></span>
-                    <input type="date" class="form-control" placeholder="" required name="signature_date_one"
-                        value="{{date(" Y-m-d");}}">
-                    @error('signature_date_one')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <span class="">Date<span class="text-danger">*</span></span>
+                            <input type="date" class="form-control" placeholder="" required name="signature_date_one"
+                                value="{{date(" Y-m-d");}}">
+                            @error('signature_date_one')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <span class="">Applicant’s Signature Name<span class="text-danger">*</span></span>
+                            <input type="text" class="form-control" placeholder="Enter Applicant’s Signature" required
+                                name="signature_name_one" value="">
+                            @error('signature_name_one')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
                 </div>
                 <div class="card">
                     <div class="card-body">
@@ -254,16 +270,30 @@ $partner = Session::get('partner');
             </div>
             @if(isset($partner) && $partner['partner_owner_name'] !='')
             <div class="col-md-6 col-sm-12 col-xs-12 mt-3">
-                <div class="form-group">
-                    <span class="">Date<span class="text-danger">*</span></span>
-                    <input type="date" class="form-control" placeholder="" {{isset($partner) ?
-                        $partner['partner_owner_name'] !='' ?'required' :'':''}} name="signature_date_two"
-                        value="{{date(" Y-m-d");}}">
-                    @error('signature_date_two')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
-                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <span class="">Date<span class="text-danger">*</span></span>
+                            <input type="date" class="form-control" placeholder="" {{isset($partner) ?
+                                $partner['partner_owner_name'] !='' ?'required' :'':''}} name="signature_date_two"
+                                value="{{date(" Y-m-d");}}">
+                            @error('signature_date_two')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
 
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <span class="">2nd Applicant’s Signature Name<span class="text-danger">*</span></span>
+                            <input type="text" class="form-control" placeholder="2nd Applicant’s Signature Name"
+                                required name="signature_name_two" value="">
+                            @error('signature_name_two')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-body">
                         <div class="col-md-12">
