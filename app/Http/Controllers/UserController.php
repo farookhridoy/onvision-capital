@@ -28,8 +28,6 @@ class UserController extends Controller
     {
         return view('pages.step3');
     }
-
-
     public function finalStepView()
     {
         return view('pages.step4');
@@ -165,7 +163,6 @@ class UserController extends Controller
             $user->type_of_business = Session::get('homepage')['type_of_business'];
             $user->service_sold = Session::get('homepage')['service_sold'];
 
-           
             $user->merchant_owner_name = Session::get('merchant')['merchant_owner_name'];
             $user->merchant_title = Session::get('merchant')['merchant_title'];
             $user->merchant_ownership = Session::get('merchant')['merchant_ownership'];
@@ -177,19 +174,21 @@ class UserController extends Controller
             $user->merchant_date_of_birth = Session::get('merchant')['merchant_date_of_birth'];
             $user->merchant_home = Session::get('merchant')['merchant_home'];
             $user->merchant_phone_no = Session::get('merchant')['merchant_phone_no'];
-
-            $user->partner_owner_name = Session::get('partner')['partner_owner_name'];
-            $user->partner_title = Session::get('partner')['partner_title'];
-            $user->partner_ownership = Session::get('partner')['partner_ownership'];
-            $user->partner_home_address = Session::get('partner')['partner_home_address'];
-            $user->partner_city = Session::get('partner')['partner_city'];
-            $user->partner_zip = Session::get('partner')['partner_zip'];
-            $user->partner_state = Session::get('partner')['partner_state'];
-            $user->partner_ssn = Session::get('partner')['partner_ssn'];
-            $user->partner_date_of_birth = Session::get('partner')['partner_date_of_birth'];
-            $user->partner_home = Session::get('partner')['partner_home'];
-            $user->partner_phone_no = Session::get('partner')['partner_phone_no'];
             
+            if(Session::has('partner')){
+            
+                $user->partner_owner_name = Session::get('partner')['partner_owner_name'];
+                $user->partner_title = Session::get('partner')['partner_title'];
+                $user->partner_ownership = Session::get('partner')['partner_ownership'];
+                $user->partner_home_address = Session::get('partner')['partner_home_address'];
+                $user->partner_city = Session::get('partner')['partner_city'];
+                $user->partner_zip = Session::get('partner')['partner_zip'];
+                $user->partner_state = Session::get('partner')['partner_state'];
+                $user->partner_ssn = Session::get('partner')['partner_ssn'];
+                $user->partner_date_of_birth = Session::get('partner')['partner_date_of_birth'];
+                $user->partner_home = Session::get('partner')['partner_home'];
+                $user->partner_phone_no = Session::get('partner')['partner_phone_no'];
+            }
             $user->business_mortgage_bank=$request->business_mortgage_bank;
             $user->business_mortgage_account=$request->business_mortgage_account;
             $user->business_mortgage_phone=$request->business_mortgage_phone;
@@ -223,16 +222,11 @@ class UserController extends Controller
                 $user->save();
             }
 
-            // if ($request->has('bank_statements_file')) {
-            //     $bank_statements_file = $this->fileUpload($request->bank_statements_file,'uploads/bank-statement/',$user->id);
-            //     $user->bank_statements_file=$bank_statements_file;
-            //     $user->save();
-            // }
-
             if($request->hasFile('bank_statements_file'))
             {
                 foreach ($request->bank_statements_file as $key=> $photo) {
-                    $filename = $this->fileUpload($photo,'uploads/bank-statement/',$user->id.'-'.date('dmyhis'));
+                    $title = $user->id . '-' . date('dmyhis');
+                    $filename = $this->fileUpload($photo,'uploads/bank-statement/',$title);
                     UserBankStatement::create([
                         'user_id' => $user->id,
                         'file_name' => $filename,
@@ -253,7 +247,7 @@ class UserController extends Controller
 
             Mail::send('mail.mail_body', $data, function ($message) use ($data, $pdf_filename) {
                 $message->to($data['email'])
-                //->cc(['mizan.bd2369@gmail.com','info@onvisioncapital.com','deals@onvisioncapital.com'])
+                // ->cc(['mizan.bd2369@gmail.com','info@onvisioncapital.com','deals@onvisioncapital.com'])
                 ->cc(['gmfaruk2021@gmail.com'])
                 ->subject($data["title"])
                 ->attach(public_path('attachments/'.$pdf_filename.'.pdf'));
@@ -266,14 +260,12 @@ class UserController extends Controller
             Session::forget('merchant');
             Session::forget('partner');
 
-            return redirect()->route('home_page')->with('success', 'Data has been saved successfully. Thank you for your time. We will contact you soon.');
+            return redirect()->route('thanks')->with('success', 'Data has been saved successfully. Thank you for your time. We will contact you soon.');
 
         }catch(\Throwable $th){
             DB::rollback();
             return back()->with('error',$th->getMessage());
         }
     }
-
-   
 }
 

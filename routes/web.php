@@ -39,6 +39,6 @@ Route::post('step2/submit', [UserController::class, 'NextTow'])->name('submit_se
 Route::post('step3/submit', [UserController::class, 'NextThree'])->name('submit_third_step');
 Route::post('step4/save', [UserController::class, 'FinalStep'])->name('signpad.save');
 
-// Route::get('/html', function(){
-//     return view('mail.info_mail_raw',['title'=>'Test']);
-// });
+Route::get('/thanks', function(){
+    return view('pages.success',['title'=>'Thank You']);
+})->name('thanks');
