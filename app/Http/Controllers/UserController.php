@@ -38,7 +38,7 @@ class UserController extends Controller
         $user = User::findOrfail($id);
         $title = "information Mail";
 
-        return view('mail.info_mail',compact('user','title'));
+        return view('mail.info_mail', compact('user', 'title'));
     }
 
     public function NextOne(Request $request)
@@ -111,7 +111,7 @@ class UserController extends Controller
 
 
     public function NextThree(Request $request)
-    {   
+    {
         $this->validate($request, [
             'partner_phone_no' => 'max:20',
         ]);
@@ -136,14 +136,14 @@ class UserController extends Controller
     }
 
     public function FinalStep(Request $request)
-    {   
+    {
         $this->validate($request, [
             'signature_one' => 'required',
             'signature_date_one' => 'required',
         ]);
 
         DB::beginTransaction();
-        try {   
+        try {
 
             $user = new User();
             $user->business_name = Session::get('homepage')['business_name'];
@@ -174,9 +174,9 @@ class UserController extends Controller
             $user->merchant_date_of_birth = Session::get('merchant')['merchant_date_of_birth'];
             $user->merchant_home = Session::get('merchant')['merchant_home'];
             $user->merchant_phone_no = Session::get('merchant')['merchant_phone_no'];
-            
-            if(Session::has('partner')){
-            
+
+            if (Session::has('partner')) {
+
                 $user->partner_owner_name = Session::get('partner')['partner_owner_name'];
                 $user->partner_title = Session::get('partner')['partner_title'];
                 $user->partner_ownership = Session::get('partner')['partner_ownership'];
@@ -189,44 +189,43 @@ class UserController extends Controller
                 $user->partner_home = Session::get('partner')['partner_home'];
                 $user->partner_phone_no = Session::get('partner')['partner_phone_no'];
             }
-            $user->business_mortgage_bank=$request->business_mortgage_bank;
-            $user->business_mortgage_account=$request->business_mortgage_account;
-            $user->business_mortgage_phone=$request->business_mortgage_phone;
-            $user->software_model=$request->software_model;
-            $user->number_of_terminal=$request->number_of_terminal;
-            $user->monthly_credit_card_volumn=$request->monthly_credit_card_volumn;
-            $user->avg_monthly_gross_sales_volumn=$request->avg_monthly_gross_sales_volumn;
-            $user->requested_advance_amount=$request->requested_advance_amount;
-            $user->do_you_accept=json_encode($request->do_you_accept);
-            $user->current_cash_advance_company=$request->current_cash_advance_company;
-            $user->balance=$request->balance;
-            $user->business_mortgage_phone=$request->business_mortgage_phone;
-            $user->underwrite=$request->underwrite;
+            $user->business_mortgage_bank = $request->business_mortgage_bank;
+            $user->business_mortgage_account = $request->business_mortgage_account;
+            $user->business_mortgage_phone = $request->business_mortgage_phone;
+            $user->software_model = $request->software_model;
+            $user->number_of_terminal = $request->number_of_terminal;
+            $user->monthly_credit_card_volumn = $request->monthly_credit_card_volumn;
+            $user->avg_monthly_gross_sales_volumn = $request->avg_monthly_gross_sales_volumn;
+            $user->requested_advance_amount = $request->requested_advance_amount;
+            $user->do_you_accept = json_encode($request->do_you_accept);
+            $user->current_cash_advance_company = $request->current_cash_advance_company;
+            $user->balance = $request->balance;
+            $user->business_mortgage_phone = $request->business_mortgage_phone;
+            $user->underwrite = $request->underwrite;
 
-            $user->signature_date_one=$request->signature_date_one;
-            $user->signature_date_two=$request->signature_date_two;
-            $user->signature_name_one=$request->signature_name_one;
-            $user->signature_name_two=$request->signature_name_two;
+            $user->signature_date_one = $request->signature_date_one;
+            $user->signature_date_two = $request->signature_date_two;
+            $user->signature_name_one = $request->signature_name_one;
+            $user->signature_name_two = $request->signature_name_two;
 
             $user->save();
-            
+
             if ($request->has('signature_one')) {
-                $signature_one = $this->base64FileUpload($request->signature_one,'uploads/signatures-one/',$user->id);
-                $user->signature_one=$signature_one;
+                $signature_one = $this->base64FileUpload($request->signature_one, 'uploads/signatures-one/', $user->id);
+                $user->signature_one = $signature_one;
                 $user->save();
             }
 
             if ($request->has('signature_two')) {
-                $signature_two = $this->base64FileUpload($request->signature_two,'uploads/signatures-two/',$user->id);
-                $user->signature_two=$signature_two;
+                $signature_two = $this->base64FileUpload($request->signature_two, 'uploads/signatures-two/', $user->id);
+                $user->signature_two = $signature_two;
                 $user->save();
             }
 
-            if($request->hasFile('bank_statements_file'))
-            {
-                foreach ($request->bank_statements_file as $key=> $photo) {
+            if ($request->hasFile('bank_statements_file')) {
+                foreach ($request->bank_statements_file as $key => $photo) {
                     $title = $user->id . '-' . date('dmyhis');
-                    $filename = $this->fileUpload($photo,'uploads/bank-statement/',$title);
+                    $filename = $this->fileUpload($photo, 'uploads/bank-statement/', $title);
                     UserBankStatement::create([
                         'user_id' => $user->id,
                         'file_name' => $filename,
@@ -242,16 +241,16 @@ class UserController extends Controller
             $data["title"] = "Mail from onvisioncapital.com";
             $data["user"] = $user;
 
-            $pdf_filename = 'information'.date('ymdHis');
-            $pdf = $this->saveMPDF('mail.info_mail_raw', $data,  'Mail from onvisioncapital.com', $pdf_filename);
+            $pdf_filename = 'information' . date('ymdHis');
+            $pdf = $this->saveMPDF('mail.info_mail_raw', $data, 'Mail from onvisioncapital.com', $pdf_filename);
 
             Mail::send('mail.mail_body', $data, function ($message) use ($data, $pdf_filename) {
                 $message->to($data['email'])
-                // ->cc(['mizan.bd2369@gmail.com','info@onvisioncapital.com','deals@onvisioncapital.com'])
-                ->cc(['gmfaruk2021@gmail.com'])
-                ->subject($data["title"])
-                ->attach(public_path('attachments/'.$pdf_filename.'.pdf'));
-                foreach($data['user']->userBankStatement as $file){
+                    // ->cc(['mizan.bd2369@gmail.com','info@onvisioncapital.com','deals@onvisioncapital.com'])
+                    ->cc(['gmfaruk2021@gmail.com'])
+                    ->subject($data["title"])
+                    ->attach(public_path('attachments/' . $pdf_filename . '.pdf'));
+                foreach ($data['user']->userBankStatement as $file) {
                     $message->attach(public_path($file->file_name));
                 }
             });
@@ -262,10 +261,9 @@ class UserController extends Controller
 
             return redirect()->route('thanks')->with('success', 'Data has been saved successfully. Thank you for your time. We will contact you soon.');
 
-        }catch(\Throwable $th){
+        } catch (\Throwable $th) {
             DB::rollback();
-            return back()->with('error',$th->getMessage());
+            return back()->with('error', $th->getMessage());
         }
     }
 }
-
